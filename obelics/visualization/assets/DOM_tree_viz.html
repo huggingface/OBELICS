@@ -1,0 +1,193 @@
+<!-- Adapted from https://gojs.net/latest/samples/DOMTree.html and https://gojs.net/latest/intro/tooltips.html-->
+<!DOCTYPE html>
+    <body>
+        <!-- * * * * * * * * * * * * * -->
+        <!-- Start of GoJS sample code -->
+        <script src="https://rawgit.com/NorthwoodsSoftware/GoJS/master/release/go.js"></script>
+        <script id="code">
+            // Get the body tree of the html to display
+            // Dirty trick from https://stackoverflow.com/questions/2522422/converting-a-javascript-string-to-a-html-object
+            var body_html_string = `{{body_html}}`;
+            var htmlObject = document.createElement('body');
+            htmlObject.innerHTML = body_html_string;
+
+            var names = {}; // hash to keep track of what names have been used
+
+            function init() {
+                const $ = go.GraphObject.make;    // for conciseness in defining templates
+
+                myDiagram =
+                    $(go.Diagram, "myDiagramDiv",
+                        {
+                            initialAutoScale: go.Diagram.UniformToFill,
+                            // define the layout for the diagram
+                            layout: $(go.TreeLayout, { nodeSpacing: 5, layerSpacing: 30 }),
+                            "toolManager.hoverDelay": 10
+                        });
+
+                // Define a simple node template consisting of text followed by an expand/collapse button
+                myDiagram.nodeTemplate =
+                    $(go.Node, "Horizontal",
+                        { selectionChanged: nodeSelectionChanged },    // this event handler is defined below
+                        $(go.Panel, "Auto",
+                            $(go.Shape, { fill: "#1F4963", stroke: null }),
+                            $(go.TextBlock,
+                                {
+                                    font: "bold 13px Helvetica, bold Arial, sans-serif",
+                                    stroke: "white", margin: 3
+                                },
+                                new go.Binding("text", "key")),
+                            {
+                                toolTip:  // define a tooltip for each node that displays the color as text
+                                    $("ToolTip",
+                                    $(go.TextBlock,
+                                        { margin: 5, width: 250 },
+                                        new go.Binding("text", "", textInfo))
+                                    )  // end of Adornment
+                            }
+                        ),
+                        $("TreeExpanderButton")
+                    );
+
+                function formatString(string) {
+                    if (string == "") {
+                        return "∅"
+                    } else {
+                        if (string.length > 100) {
+                            return string.slice(0, 100-3) + "..."
+                        } else {
+                            return string
+                        }
+                    }
+                }
+                function textInfo(nodeData) {
+                    var text = formatString(nodeData.text)
+                    var textWithChildren = formatString(nodeData.textWithChildren)
+                    return  "TAG: " + nodeData.tag +
+                            "\n\n-------------------------" +
+                            "\n\nTEXT:\n" + text +
+                            "\n\n-------------------------" +
+                            "\n\nTEXT (INCLUDING CHILDREN):\n" + textWithChildren +
+                            "\n\n-------------------------" +
+                            "\n\nNODE ATTRIBUTES:\n" + JSON.stringify(nodeData.attributes)
+                }
+
+                // Define a trivial link template with no arrowhead.
+                myDiagram.linkTemplate =
+                    $(go.Link,
+                        { selectable: false },
+                        $(go.Shape));    // the link shape
+
+                // create the model for the DOM tree
+                myDiagram.model =
+                    new go.TreeModel( {
+                        isReadOnly: true,    // don't allow the user to delete or copy nodes
+                        // build up the tree in an Array of node data
+                        nodeDataArray: traverseDom(htmlObject)
+                    });
+                myDiagram.div.style.height = "450px";
+            }
+
+
+
+            // Walk the DOM, starting at document, and return an Array of node data objects representing the DOM tree
+            // Typical usage: traverseDom(document.activeElement)
+            // The second and third arguments are internal, used when recursing through the DOM
+            function traverseDom(node, parentName, dataArray) {
+                if (parentName === undefined) parentName = null;
+                if (dataArray === undefined) dataArray = [];
+                // skip everything but HTML Elements
+                if (!(node instanceof Element)) return;
+                // Ignore the navigation menus
+                if (node.id === "navSide" || node.id === "navTop") return;
+
+                // add this node to the nodeDataArray
+                var name = getName(node);
+                var tag = node.nodeName;
+                var text = getText(node);
+                var textWithChildren = getTextWithChildren(node);
+                var attributes = getAttributes(node);
+                var data = {
+                    key: name,
+                    name: name,
+                    tag: tag,
+                    text: text,
+                    textWithChildren: textWithChildren,
+                    attributes: attributes,
+                };
+                dataArray.push(data);
+
+                // add a link to its parent
+                if (parentName !== null) {
+                    data.parent = parentName;
+                }
+                // find all children
+                var l = node.childNodes.length;
+                for (var i = 0; i < l; i++) {
+                    traverseDom(node.childNodes[i], name, dataArray);
+                }
+                return dataArray;
+            }
+
+            // Give every node a unique name
+            function getName(node) {
+                var n = node.nodeName;
+                if (node.id) n = n + " (id: " + node.id + ")";
+                var namenum = n;    // make sure the name is unique
+                var i = 1;
+                while (names[namenum] !== undefined) {
+                    namenum = n + i;
+                    i++;
+                }
+                names[namenum] = node;
+                return namenum;
+            }
+
+            // Extract text from every node
+            function getTextWithChildren(node) {
+                var textContent = node.textContent
+                return textContent.trim()
+            }
+            function getText(node) {
+                var text = "";
+                for (var i=0; i < node.childNodes.length; ++i) {
+                    if (node.childNodes[i].nodeType == Node.TEXT_NODE) {
+                        text += node.childNodes[i].textContent;
+                    }
+                }
+                return text.trim()
+            }
+            // Extract dictionary of attributes
+            function getAttributes(node) {
+                var dict = {};
+                var attrs = node.attributes;
+                for (var i=0; i<attrs.length; i++) {
+                    dict[attrs[i].name] = attrs[i].value;
+                }
+                return dict
+            }
+
+            // When a Node is selected, highlight the corresponding HTML element.
+            function nodeSelectionChanged(node) {
+                if (node.isSelected) {
+                    names[node.data.name].style.backgroundColor = "lightblue";
+                } else {
+                    names[node.data.name].style.backgroundColor = "";
+                }
+            }
+            window.addEventListener('DOMContentLoaded', init);
+        </script>
+        <div id="sample">
+            <!-- The DIV needs an explicit size or else we won't see anything. -->
+            <div id="myDiagramDiv" style="border: 1px solid black; width: 100%; height: 300px; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0);">
+                    <canvas tabindex="0" width="2108" height="574" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 1054px; height: 287px;">This text is displayed if your browser does not support the Canvas HTML element.</canvas>
+                    <div style="position: absolute; overflow: auto; width: 1054px; height: 298px; z-index: 1;">
+                        <div style="position: absolute; width: 1220.02px; height: 1px;">
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <!-- * * * * * * * * * * * * * -->
+        <!--    End of GoJS sample code    -->
+    </body>
+</html>

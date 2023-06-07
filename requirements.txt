@@ -1,0 +1,29 @@
+# Streamlit app
+streamlit
+pandas
+jinja2~=3.0
+# Tree manipulations
+selectolax
+# Clip stuff
+transformers
+scipy
+plotly
+kaleido
+torch>=2.0  # for flash attention support
+# Filtering
+emoji==1.6.1
+fasttext
+sentencepiece
+https://github.com/kpu/kenlm/archive/master.zip
+# Tests
+humanfriendly
+# Downloading images
+img2dataset
+# Multiprocessing
+pathos
+# Configs
+PyYAML
+# HTML extraction
+boto3
+bs4
+warcio

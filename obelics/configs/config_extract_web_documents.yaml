@@ -1,0 +1,23 @@
+dom_tree_simplificator:
+  strip_multiple_linebreaks: True
+  strip_multiple_spaces: True
+  remove_html_comments: True
+  replace_line_break_tags: True
+  unwrap_tags: True
+  strip_tags: True
+  strip_special_divs: True
+  remove_dates: True
+  remove_empty_leaves: True
+  unnest_nodes: True
+  remake_tree: True
+  css_rules:
+    - "[class~='footer']"
+    - "[class~='site-info']"
+  css_rules_replace_with_text: {"[class~='more-link']": "\n\nEND_OF_DOCUMENT_TOKEN_TO_BE_REPLACED\n\n"}
+pre_extraction_simplificator:
+  only_text_image_nodes: True
+  format_texts: True
+  merge_consecutive_text_nodes: True
+web_document_extractor:
+  image_size: 256
+  resize_mode: no
