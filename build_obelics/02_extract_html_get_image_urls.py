@@ -5,7 +5,7 @@ from multiprocessing import cpu_count
 
 from datasets import load_from_disk
 
-from obelics.processors import (
+from obelisc.processors import (
     DOMTreeSimplificator,
     HtmlExtractor,
     PreExtractionSimplificator,

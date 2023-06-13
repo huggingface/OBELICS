@@ -6,7 +6,7 @@ from multiprocessing import cpu_count
 import yaml
 from datasets import load_from_disk
 
-from obelics.processors import (
+from obelisc.processors import (
     CommonCrawlWebDocumentExtractor,
     DOMTreeSimplificator,
     HtmlExtractor,

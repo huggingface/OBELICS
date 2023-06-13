@@ -5,7 +5,7 @@ from multiprocessing import cpu_count
 
 from datasets import Features, Value, load_from_disk
 
-from obelics.processors import WarcDownloader
+from obelisc.processors import WarcDownloader
 
 
 logging.basicConfig(

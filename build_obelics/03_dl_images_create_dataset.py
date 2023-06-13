@@ -3,7 +3,7 @@ import logging
 import os
 from multiprocessing import cpu_count
 
-from obelics.processors import WebDocumentExtractor
+from obelisc.processors import WebDocumentExtractor
 
 
 logging.basicConfig(

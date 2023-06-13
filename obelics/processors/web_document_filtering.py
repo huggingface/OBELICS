@@ -7,7 +7,7 @@ import kenlm
 import numpy as np
 import sentencepiece
 
-from obelics.utils import SPECIAL_CHARACTERS
+from obelisc.utils import SPECIAL_CHARACTERS
 
 
 class FilteringFunctions:

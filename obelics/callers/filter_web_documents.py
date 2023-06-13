@@ -6,8 +6,8 @@ import yaml
 from datasets import load_from_disk
 from PIL import Image
 
-from obelics.processors import WebDocumentFilteringDocLevel, WebDocumentFilteringNodeLevel
-from obelics.utils import (
+from obelisc.processors import WebDocumentFilteringDocLevel, WebDocumentFilteringNodeLevel
+from obelisc.utils import (
     DIGITS_RE,
     FLAGGED_WORDS,
     NON_PRINTING_CHARACTERS_RE,
@@ -54,7 +54,7 @@ def get_args():
     parser.add_argument(
         "--path_config_filter_web_documents",
         type=str,
-        default="./obelics/configs/config_filter_web_documents.yaml",
+        default="./obelisc/configs/config_filter_web_documents.yaml",
         help="The path of the config file containing the filtering parameters.",
     )
     parser.add_argument(

@@ -7,8 +7,8 @@ import yaml
 from datasets import load_from_disk
 from PIL import Image, ImageFile
 
-from obelics.processors import WebDocumentFilteringDocLevel, WebDocumentFilteringNodeLevel
-from obelics.utils import (
+from obelisc.processors import WebDocumentFilteringDocLevel, WebDocumentFilteringNodeLevel
+from obelisc.utils import (
     DIGITS_RE,
     FLAGGED_WORDS,
     NON_PRINTING_CHARACTERS_RE,

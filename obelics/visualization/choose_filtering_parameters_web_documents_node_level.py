@@ -11,8 +11,8 @@ import sentencepiece
 import streamlit as st
 from datasets import load_from_disk
 
-from obelics.processors.web_document_filtering import FilteringFunctions
-from obelics.utils.filtering_utils import (
+from obelisc.processors.web_document_filtering import FilteringFunctions
+from obelisc.utils.filtering_utils import (
     DIGITS_RE,
     FLAGGED_WORDS,
     NON_PRINTING_CHARACTERS_RE,
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     st.title("Visualization to help choosing the filtering parameters for web documents at node level")
     st.set_page_config(layout="wide")
 
-    path_web_document_dataset = "./large_files/web_document_dataset_45M_shard_2"  # Use a web document format, like OBELICS
+    path_web_document_dataset = "./large_files/web_document_dataset_45M_shard_2"  # Use a web document format, like OBELISC
     path_common_words = "./large_files/common_words.json"  # Find it at https://drive.google.com/file/d/1TeydSroOOmlEuxIcwgsJQ2YF4kPJR6N4/view?usp=sharing
     path_lang_id_model = "./large_files/lid.176.bin"  # Find it at https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
     path_sentencepiece_model = "./large_files/en.sp.model"  # Find it at https://huggingface.co/edugp/kenlm/resolve/main/wikipedia/en.sp.model
