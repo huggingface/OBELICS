@@ -1,12 +1,12 @@
 # OBELISC
 
-OBELISC is an open, massive and curated collection of interleaved image-text web documents, containing 141M documents, 115B text tokens and 353M images.
+**OBELISC is an open, massive and curated collection of interleaved image-text web documents, containing 141M documents, 115B text tokens and 353M images.**
 
-Dataset page: https://huggingface.co/datasets/HuggingFaceM4/OBELISC
+**Dataset page:** https://huggingface.co/datasets/HuggingFaceM4/OBELISC**
 
-Visualization of OBELISC web documents: https://huggingface.co/spaces/HuggingFaceM4/obelisc_visualization
+**Visualization of OBELISC web documents:** https://huggingface.co/spaces/HuggingFaceM4/obelisc_visualization
 
-Paper: Arxiv link soon
+**Paper:** Arxiv link soon
 
 
 ## Goal and organization of [obelisc](https://github.com/huggingface/OBELISC/tree/main/obelisc)
