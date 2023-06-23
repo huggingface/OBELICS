@@ -1,5 +1,7 @@
 # OBELISC
 
+![](https://github.com/huggingface/OBELISC/blob/main/image_obelisk.png?raw=true)
+
 **OBELISC is an open, massive and curated collection of interleaved image-text web documents, containing 141M documents, 115B text tokens and 353M images.**
 
 **Dataset page:** https://huggingface.co/datasets/HuggingFaceM4/OBELISC
