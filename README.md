@@ -8,7 +8,7 @@
 
 **Visualization of OBELISC web documents:** https://huggingface.co/spaces/HuggingFaceM4/obelisc_visualization
 
-**Paper:** Arxiv link soon
+**Paper:** https://arxiv.org/abs/2306.16527
 
 
 ## Goal and organization of [obelisc](https://github.com/huggingface/OBELISC/tree/main/obelisc)
