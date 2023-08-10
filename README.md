@@ -42,10 +42,12 @@ These scripts often call methods defined in [processors](https://github.com/hugg
 
 If you are using this dataset or this code, please cite
 ```
-@inproceedings{
-lauren{\c{c}}on2023obe,
-title={OBELICS: An Open Web-Scale Filtered Dataset of Interleaved Image-Text Documents},
-author={Hugo Lauren{\c{c}}on and Lucile Saulnier and L{\'e}o Tronchon and Stas Bekman and Amanpreet Singh and Anton Lozhkov and Thomas Wang and Siddharth Karamcheti and Alexander M Rush and Douwe Kiela and Matthieu Cord and Victor Sanh},
-year={2023}
+@misc{laurençon2023obelics,
+      title={OBELICS: An Open Web-Scale Filtered Dataset of Interleaved Image-Text Documents},
+      author={Hugo Laurençon and Lucile Saulnier and Léo Tronchon and Stas Bekman and Amanpreet Singh and Anton Lozhkov and Thomas Wang and Siddharth Karamcheti and Alexander M. Rush and Douwe Kiela and Matthieu Cord and Victor Sanh},
+      year={2023},
+      eprint={2306.16527},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR}
 }
 ```
