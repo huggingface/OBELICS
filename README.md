@@ -42,7 +42,7 @@ These scripts often call methods defined in [processors](https://github.com/hugg
 
 If you are using this dataset or this code, please cite
 ```
-@misc{laurençon2023obelics,
+@misc{laurencon2023obelics,
       title={OBELICS: An Open Web-Scale Filtered Dataset of Interleaved Image-Text Documents},
       author={Hugo Laurençon and Lucile Saulnier and Léo Tronchon and Stas Bekman and Amanpreet Singh and Anton Lozhkov and Thomas Wang and Siddharth Karamcheti and Alexander M. Rush and Douwe Kiela and Matthieu Cord and Victor Sanh},
       year={2023},
