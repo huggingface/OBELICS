@@ -1,6 +1,6 @@
 import re
 
-from obelisc.utils import (
+from obelics.utils import (
     INTERESTING_TAGS_SET,
     MEDIA_CONTAIN_INTERESTING_ATTRIBUTES_SET,
     UNWRAP_TAGS,

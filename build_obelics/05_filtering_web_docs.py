@@ -1,13 +1,14 @@
 import argparse
 import logging
+import os
 from multiprocessing import cpu_count
 
 import yaml
 from datasets import load_from_disk
-from PIL import Image
+from PIL import Image, ImageFile
 
-from obelisc.processors import WebDocumentFilteringDocLevel, WebDocumentFilteringNodeLevel
-from obelisc.utils import (
+from obelics.processors import WebDocumentFilteringDocLevel, WebDocumentFilteringNodeLevel
+from obelics.utils import (
     DIGITS_RE,
     FLAGGED_WORDS,
     NON_PRINTING_CHARACTERS_RE,
@@ -18,8 +19,9 @@ from obelisc.utils import (
 )
 
 
-# Useful to avoid DecompressionBombError
+# Useful to avoid DecompressionBombError and truncated image error
 Image.MAX_IMAGE_PIXELS = None
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 logging.basicConfig(
@@ -32,18 +34,23 @@ logger.setLevel(logging.INFO)
 
 
 def get_args():
-    parser = argparse.ArgumentParser(description="Web document filtering.")
+    parser = argparse.ArgumentParser(description="Filtering of WebDocs.")
+    parser.add_argument(
+        "idx_job",
+        type=int,
+        help="Index of the job (between 0 and 199).",
+    )
     parser.add_argument(
         "--path_web_document_dataset",
         type=str,
-        default="./large_files/web_document_dataset_100",
+        default="s3://m4-datasets/webdocs/web_document_dataset/",
         help="Path of the dataset containing the web documents.",
     )
     parser.add_argument(
-        "--path_save_dir_web_document_dataset_filtered",
+        "--path_save_web_document_dataset_filtered",
         type=str,
-        default="./large_files/web_document_dataset_100_filtered",
-        help="The directory to save the filtered web document dataset.",
+        default="s3://m4-datasets/webdocs/web_document_dataset_filtered/",
+        help="The path to save the filtered web document dataset.",
     )
     parser.add_argument(
         "--num_proc",
@@ -54,31 +61,31 @@ def get_args():
     parser.add_argument(
         "--path_config_filter_web_documents",
         type=str,
-        default="./obelisc/configs/config_filter_web_documents.yaml",
+        default="./m4/sourcing/data_collection/configs/config_filter_web_documents.yaml",
         help="The path of the config file containing the filtering parameters.",
     )
     parser.add_argument(
         "--path_common_words",
         type=str,
-        default="./large_files/common_words.json",  # Find it at https://drive.google.com/file/d/1TeydSroOOmlEuxIcwgsJQ2YF4kPJR6N4/view?usp=sharing
+        default="/fsx/hugo/filtering_web_docs/models/common_words.json",
         help="The path of the dictionary containing the common words.",
     )
     parser.add_argument(
         "--path_lang_id_model",
         type=str,
-        default="./large_files/lid.176.bin",  # Find it at https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
+        default="/fsx/hugo/filtering_web_docs/models/lid.176.bin",
         help="The path of the lang id model (FastText).",
     )
     parser.add_argument(
         "--path_sentencepiece_model",
         type=str,
-        default="./large_files/en.sp.model",  # Find it at https://huggingface.co/edugp/kenlm/resolve/main/wikipedia/en.sp.model
+        default="/fsx/hugo/filtering_web_docs/models/en.sp.model",
         help="The path of the SentencePiece model.",
     )
     parser.add_argument(
         "--path_kenlm_model",
         type=str,
-        default="./large_files/en.arpa.bin",  # Find it at https://huggingface.co/edugp/kenlm/resolve/main/wikipedia/en.arpa.bin
+        default="/fsx/hugo/filtering_web_docs/models/en.arpa.bin",
         help="The path of the KenLM model.",
     )
     args = parser.parse_args()
@@ -88,8 +95,21 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
 
+    path_save_disk_tmp_files = f"/scratch/storage_hugo_{args.idx_job}/"
+    if os.path.exists(path_save_disk_tmp_files):
+        os.system(f"rm -r {path_save_disk_tmp_files}")
+    os.system(f"mkdir {path_save_disk_tmp_files}")
+
     logger.info("Starting loading the web document dataset")
-    web_document_dataset = load_from_disk(args.path_web_document_dataset)
+    path_sync_s3 = os.path.join(args.path_web_document_dataset, str(args.idx_job))
+    path_save_disk_web_document_dataset = os.path.join(path_save_disk_tmp_files, "web_document_dataset")
+    os.system(f"mkdir {path_save_disk_web_document_dataset}")
+    command_sync_s3 = f"aws s3 sync {path_sync_s3} {path_save_disk_web_document_dataset}"
+    os.system(command_sync_s3)
+    os.system(command_sync_s3)
+    os.system(command_sync_s3)
+
+    web_document_dataset = load_from_disk(path_save_disk_web_document_dataset)
     logger.info("Finished loading the web document dataset")
 
     with open(args.path_config_filter_web_documents) as f:
@@ -207,8 +227,22 @@ if __name__ == "__main__":
     )
     logger.info("Finished filtering the web document dataset at doc level")
 
-    logger.info("Starting saving the filtered web document dataset")
-    web_document_dataset_filtered.save_to_disk(
-        args.path_save_dir_web_document_dataset_filtered, num_proc=args.num_proc
+    logger.info("Starting saving the web document dataset filtered")
+    path_save_disk_web_document_dataset_filtered = os.path.join(
+        path_save_disk_tmp_files, "web_document_dataset_filtered"
     )
-    logger.info("Finished saving the filtered web document dataset")
+    web_document_dataset_filtered.save_to_disk(path_save_disk_web_document_dataset_filtered, num_proc=args.num_proc)
+
+    path_sync_s3 = os.path.join(args.path_save_web_document_dataset_filtered, str(args.idx_job))
+    command_sync_s3 = f"aws s3 sync {path_save_disk_web_document_dataset_filtered} {path_sync_s3}"
+    os.system(command_sync_s3)
+    os.system(command_sync_s3)
+    os.system(command_sync_s3)
+    logger.info("Finished saving the web document dataset filtered")
+
+    logger.info(f"Number of documents in the raw web document dataset: {web_document_dataset.num_rows}")
+    logger.info(f"Number of documents in the filtered web document dataset: {web_document_dataset_filtered.num_rows}")
+
+    logger.info("Starting deleting the tmp files")
+    os.system(f"rm -r {path_save_disk_tmp_files}")
+    logger.info("Finished deleting the tmp files")

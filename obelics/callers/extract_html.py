@@ -4,7 +4,7 @@ from multiprocessing import cpu_count
 
 from datasets import load_from_disk
 
-from obelisc.processors import HtmlExtractor
+from obelics.processors import HtmlExtractor
 
 
 logging.basicConfig(

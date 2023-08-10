@@ -1,4 +1,4 @@
-from obelisc.utils.filtering_utils import (
+from obelics.utils.filtering_utils import (
     DIGITS_RE,
     FLAGGED_WORDS,
     NON_PRINTING_CHARACTERS_RE,
@@ -7,7 +7,7 @@ from obelisc.utils.filtering_utils import (
     STOPWORDS,
     UNICODE_PUNCTUATION,
 )
-from obelisc.utils.simplification_utils import (
+from obelics.utils.simplification_utils import (
     TAG_TO_SEP,
     format_filename,
     format_image_size,
@@ -16,9 +16,9 @@ from obelisc.utils.simplification_utils import (
     is_url_valid,
     simplify_media_node,
 )
-from obelisc.utils.tags_attributes import (
+from obelics.utils.tags_attributes import (
     INTERESTING_TAGS_SET,
     MEDIA_CONTAIN_INTERESTING_ATTRIBUTES_SET,
     UNWRAP_TAGS,
 )
-from obelisc.utils.utils import make_selectolax_tree
+from obelics.utils.utils import make_selectolax_tree

@@ -1,6 +1,6 @@
 import re
 
-from obelisc.utils import (
+from obelics.utils import (
     MEDIA_CONTAIN_INTERESTING_ATTRIBUTES_SET,
     TAG_TO_SEP,
     simplify_media_node,

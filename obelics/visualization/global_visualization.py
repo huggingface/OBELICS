@@ -7,12 +7,12 @@ import streamlit as st
 from datasets import load_dataset
 from jinja2 import Template
 
-from obelisc.processors import (
+from obelics.processors import (
     DOMTreeSimplificator,
     PreExtractionSimplificator,
     TextMediaPairsExtractor,
 )
-from obelisc.utils import make_selectolax_tree
+from obelics.utils import make_selectolax_tree
 
 
 class Visualization:

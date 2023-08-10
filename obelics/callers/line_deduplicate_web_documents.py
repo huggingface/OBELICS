@@ -2,7 +2,7 @@ import argparse
 
 from PIL import Image
 
-from obelisc.processors import WebDocumentLineDeduplication
+from obelics.processors import WebDocumentLineDeduplication
 
 
 # Useful to avoid DecompressionBombError

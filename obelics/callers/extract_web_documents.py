@@ -5,7 +5,7 @@ from multiprocessing import cpu_count
 import yaml
 from datasets import load_from_disk
 
-from obelisc.processors import (
+from obelics.processors import (
     CommonCrawlWebDocumentExtractor,
     DOMTreeSimplificator,
     PreExtractionSimplificator,
@@ -26,7 +26,7 @@ def get_args():
     parser.add_argument(
         "--path_config_extract_web_documents",
         type=str,
-        default="./obelisc/configs/config_extract_web_documents.yaml",
+        default="./obelics/configs/config_extract_web_documents.yaml",
         help="The path of the config file containing the extraction parameters.",
     )
     parser.add_argument(

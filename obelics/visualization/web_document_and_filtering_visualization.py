@@ -8,8 +8,8 @@ import yaml
 from datasets import load_from_disk
 from PIL import Image
 
-from obelisc.processors import WebDocumentFilteringDocLevel, WebDocumentFilteringNodeLevel
-from obelisc.utils import (
+from obelics.processors import WebDocumentFilteringDocLevel, WebDocumentFilteringNodeLevel
+from obelics.utils import (
     DIGITS_RE,
     FLAGGED_WORDS,
     NON_PRINTING_CHARACTERS_RE,
@@ -734,10 +734,10 @@ class Visualization:
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
-    path_web_documents_dataset = (  # Use a web document format, like OBELISC
+    path_web_documents_dataset = (  # Use a web document format, like OBELICS
         "./large_files/web_document_dataset"
     )
-    path_config_filter_web_documents = "./obelisc/configs/config_filter_web_documents.yaml"
+    path_config_filter_web_documents = "./obelics/configs/config_filter_web_documents.yaml"
     path_common_words = "./large_files/common_words.json"  # Find it at https://drive.google.com/file/d/1TeydSroOOmlEuxIcwgsJQ2YF4kPJR6N4/view?usp=sharing
     path_lang_id_model = (  # Find it at https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
         "./large_files/lid.176.bin"
