@@ -11,7 +11,7 @@
 
 ## Goal and organization of [obelics](https://github.com/huggingface/OBELICS/tree/main/obelics)
 
-The folder [obelics](https://github.com/huggingface/OBELICS/tree/main/obelics) is aimed to:
+The folder [obelics](https://github.com/huggingface/OBELICS/tree/main/obelics) is aimed at:
 - Download WARC files from Common Crawl dumps ([warc_downloader.py](https://github.com/huggingface/OBELICS/blob/main/obelics/processors/warc_downloader.py));
 - Extract HTML files from WARC files ([html_extractor.py](https://github.com/huggingface/OBELICS/blob/main/obelics/processors/html_extractor.py));
 - Simplify HTML DOM trees ([dom_tree_simplificator.py](https://github.com/huggingface/OBELICS/blob/main/obelics/processors/dom_tree_simplificator.py));
